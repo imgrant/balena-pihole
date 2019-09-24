@@ -1,10 +1,10 @@
 
 FROM klutchell/dnscrypt-proxy:2.0.24-arm
 
-ARG server_names="['scaleway-fr', 'cloudflare']"
+ARG server_names="['cloudflare']"
 
 # uncomment this line to use a custom servers list
-# RUN sed -r "s/^(# )?server_names = .+$/server_names = ${server_names}/" -i /config/dnscrypt-proxy.toml
+RUN sed -r "s/^(# )?server_names = .+$/server_names = ${server_names}/" -i /config/dnscrypt-proxy.toml
 
 # Use servers implementing the DNSCrypt protocol
 RUN sed -r "s/^(# )?dnscrypt_servers = .+$/dnscrypt_servers = true/" -i /config/dnscrypt-proxy.toml
