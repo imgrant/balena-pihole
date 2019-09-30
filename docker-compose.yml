@@ -3,6 +3,7 @@ version: '2.1'
 volumes:
   pihole_config:
   dnsmasq_config:
+  sense-data:
 
 services:
   pihole:
@@ -29,3 +30,32 @@ services:
     dns:
       - '127.0.0.1'
       - '1.1.1.1'
+
+  influxdb:
+    restart: always
+    build: ./balena-sense/influxdb
+    volumes:
+      - 'sense-data:/data'
+
+  grafana:
+    restart: always
+    build: ./balena-sense/grafana
+    ports:
+      - "3000:80"
+    volumes:
+      - 'sense-data:/data'
+    environment:
+        - 'GF_SERVER_HTTP_PORT=80'
+        - 'GF_PATHS_PROVISIONING=/usr/src/app/provisioning'
+        - 'GF_SESSION_PROVIDER=memory'
+
+  sensor:
+    build: ./balena-sense/sensor
+    privileged: true
+    restart: always
+    volumes:
+      - 'sense-data:/data'
+
+  telegraf:
+    build: ./balena-sense/telegraf
+    restart: always

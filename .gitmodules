@@ -1,0 +1,4 @@
+[submodule "balena-sense"]
+	path = balena-sense
+	url = git@github.com:imgrant/balena-sense.git
+	branch = master
